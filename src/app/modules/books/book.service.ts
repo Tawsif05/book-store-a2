@@ -9,10 +9,26 @@ const createBookIntoDB = async (book: TBook) => {
     return result;
 }
 
-const getAllBooks = async () => {
-    const result = Book.find();
+const getAllBooks = async (searchTerm?: string) => {
+    let filter = {};
+
+    if (searchTerm) {
+        const searchRegex = new RegExp(searchTerm, 'i'); 
+        filter = {
+            $or: [
+                { title: searchRegex },
+                { author: searchRegex },
+                { category: searchRegex },
+            ],
+        };
+    }
+
+    const result = await Book.find(filter);
     return result;
-}
+};
+
+
+
 
 const getSingleBook = async (id: string) => {
     const result = await Book.findById(id);
@@ -28,7 +44,7 @@ const updateBook = async(id: string, data: Partial<TBook>) => {
 }
 
 const deleteBook = async (id: string) => {
-    const result = Book.findByIdAndDelete(id);
+    const result = await Book.findByIdAndDelete(id);
     return result;
 }
 

@@ -27,6 +27,22 @@ const createOrderIntoDB = async (order: TOrder) => {
   return result;
 };
 
+const getAllOrders = async () => {
+  const result = await Order.find();
+  return result;
+};
+
+const updateOrder = async (id: string, data: Partial<TOrder>) => {
+  const result = await Order.findByIdAndUpdate(id, data, {new: true});
+
+  return result;
+};
+
+const deleteOrder = async (id: string) => {
+  const result = await Order.findByIdAndDelete(id);
+  return result;
+}
+
 const calculateRevenue = async () => {
   const result = await Order.aggregate([
     {
@@ -43,4 +59,7 @@ const calculateRevenue = async () => {
 export const orderService = {
   createOrderIntoDB,
   calculateRevenue,
+  getAllOrders,
+  updateOrder,
+  deleteOrder,
 };

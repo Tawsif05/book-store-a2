@@ -39,6 +39,69 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+const getOrders = async (req: Request, res: Response) => {
+  try {
+    const result = await orderService.getAllOrders();
+    res.status(200).send({
+      message: "Orders retrieved successfully",
+      success: true,
+      data: result,
+    })
+  }catch(err: unknown){
+    if (err instanceof Error) {
+      res.status(400).send({
+        message: 'Something went wrong',
+        success: false,
+        error: err,
+        stack: err.stack,
+      });
+    }
+  }
+};
+
+const updateOrder = async (req: Request, res: Response) => {
+  try{
+    const id = req.params.id;
+    const body = req.body;
+    const result = await orderService.updateOrder(id, body);
+    res.status(200).send({
+      message: "Order updated successfully",
+      success: true,
+      data: result,
+    });
+  }catch(err: unknown){
+    if(err instanceof Error) {
+      res.status(400).send({
+        message: "Something went wrong",
+        success: false,
+        error: err,
+        stack: err.stack,
+      });
+    }
+  }
+}
+
+const deleteOrder = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    await orderService.deleteOrder(id);
+    res.status(200).send({
+      message: "Order deleted successfully",
+      success: true,
+      data: {},
+    })
+  }catch(err: unknown){
+    if (err instanceof Error) {
+      res.status(400).send({
+        message: "Something went wrong",
+        success: false,
+        error: err,
+        stack: err.stack,
+      });
+    }
+  }
+}
+
 const calculateRevenue = async (req: Request, res: Response) => {
   try {
     const totalRevenue = await orderService.calculateRevenue();
@@ -63,4 +126,7 @@ const calculateRevenue = async (req: Request, res: Response) => {
 export const orderController = {
   createOrder,
   calculateRevenue,
+  getOrders,
+  updateOrder,
+  deleteOrder,
 };
