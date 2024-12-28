@@ -301,7 +301,7 @@ Make sure the following software/tools are installed on your system:
 
 ## Live Link
 
-- Deployed at: 
+- Deployed at: https://book-store-a2.vercel.app/
 
 ## Video Explanation
 
